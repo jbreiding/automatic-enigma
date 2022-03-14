@@ -1,0 +1,20 @@
+{
+    debug
+    log
+    auto_https off
+}
+
+:8080 {
+    root / /srv
+    file_server
+    
+    redir /coach-nigel /coach-nigel/
+    handle_path /coach-nigel/* {
+        uri strip_prefix /coach-nigel
+
+        reverse_proxy https://backend.teams-view.ohyeah.wtf {
+            header_up X-Coach eyJOYW1lIjoiQ29hY2ggTmlnZWwiLCJQYXRoIjoiY29hY2gtbmlnZWwiLCJUZWFtcyI6W3siTmFtZSI6IlhGIEIxMyBSQ0wgNSIsIkxpbmsiOiJodHRwOi8vd3lzLTIwMjJwYy5zcG9ydHNhZmZpbml0eS5jb20vdG91ci9wdWJsaWMvaW5mby9pc2NoZWR1bGUuYXNweD9mbGlnaHRndWlkPTlFRkRENzY0LTMxOEEtNEU5My04Rjk4LUQ3ODVGM0JFM0M1N1x1MDAyNnRvdXJuYW1lbnRndWlkPTlEQ0MzNjI0LUJCRkUtNEY3MS1BOENBLTA0NTJEQjI2RTBGRlx1MDAyNnRvdXJhcHBndWlkPUIzNDQ2MDJGLTAxNzktNEU4OS1CMURFLTlBRDk2NDNDMkU1MVx1MDAyNmdhbWV0aW1lem9uZT1wYWNpZmljIn0seyJOYW1lIjoiWEYgQjEzIFJDTCA2IiwiTGluayI6Imh0dHA6Ly93eXMtMjAyMnBjLnNwb3J0c2FmZmluaXR5LmNvbS90b3VyL3B1YmxpYy9pbmZvL2lzY2hlZHVsZS5hc3B4P2ZsaWdodGd1aWQ9MTY3NDk1Q0MtNzk0RS00NDNGLTk2QzktNjIzQkQ5RjI3QTA2XHUwMDI2dG91cm5hbWVudGd1aWQ9OURDQzM2MjQtQkJGRS00RjcxLUE4Q0EtMDQ1MkRCMjZFMEZGXHUwMDI2dG91cmFwcGd1aWQ9RTAwOUVDQzItOUY4RC00OTdGLTkwODMtMTZDMjgxNzJBRTNEXHUwMDI2Z2FtZXRpbWV6b25lPXBhY2lmaWMifSx7Ik5hbWUiOiJYRiBCMTEgUkNMIDUiLCJMaW5rIjoiaHR0cDovL3d5cy0yMDIycGMuc3BvcnRzYWZmaW5pdHkuY29tL3RvdXIvcHVibGljL2luZm8vaXNjaGVkdWxlLmFzcHg/ZmxpZ2h0Z3VpZD0zMEMxRUM2NC03QkFDLTQ1QUItQkMwMS1ENTcxM0IyMjRCRDRcdTAwMjZ0b3VybmFtZW50Z3VpZD05RENDMzYyNC1CQkZFLTRGNzEtQThDQS0wNDUyREIyNkUwRkZcdTAwMjZ0b3VyYXBwZ3VpZD1FNTA4NzBCQy02NzRCLTQ5OTItODdFNS00OUUxMEEwQkI1NEVcdTAwMjZnYW1ldGltZXpvbmU9cGFjaWZpYyJ9XX0K
+            header_up Host backend.teams-view.ohyeah.wtf
+        }
+    }
+}

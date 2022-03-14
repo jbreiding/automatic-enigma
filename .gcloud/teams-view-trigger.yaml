@@ -1,0 +1,18 @@
+build:
+  images:
+  - us-west1-docker.pkg.dev/teams-view/container/teams-view:$COMMIT_SHA
+  options: {}
+  steps:
+  - args:
+    - build
+    - -t
+    - us-west1-docker.pkg.dev/teams-view/container/teams-view:$COMMIT_SHA
+    - .
+    name: gcr.io/cloud-builders/docker
+createTime: '2022-03-26T04:51:58.743051908Z'
+id: 37c19d0f-7e0f-4b60-a94c-a72fe4260b0e
+name: teams-view
+sourceToBuild:
+  ref: refs/heads/main
+  repoType: GITHUB
+  uri: https://github.com/jbreiding/automatic-enigma

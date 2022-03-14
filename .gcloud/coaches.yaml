@@ -1,0 +1,28 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+    run.googleapis.com/ingress: all
+    run.googleapis.com/ingress-status: all
+  labels:
+    cloud.googleapis.com/location: us-west1
+  name: coaches
+  namespace: '872262476135'
+spec:
+  template:
+    spec:
+      containerConcurrency: 80
+      containers:
+      - image: us-west1-docker.pkg.dev/teams-view/container/coaches@sha256:fcc1b5386cdffea9efcd8abc5fc93bb705cb5912e58938c4881909bffbee01b3
+        ports:
+        - containerPort: 8080
+          name: http1
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+      serviceAccountName: teams-view@teams-view.iam.gserviceaccount.com
+      timeoutSeconds: 300
+  traffic:
+  - latestRevision: true
+    percent: 100
