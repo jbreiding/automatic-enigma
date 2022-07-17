@@ -17,9 +17,6 @@ var coachBytes []byte
 //go:embed static/index.html
 var indexBytes []byte
 
-//go:embed coaches.yaml
-var configBytes []byte
-
 //go:embed static/favicon/*
 var favicon embed.FS
 
@@ -56,8 +53,6 @@ func gzipper(next http.Handler) http.Handler {
 }
 
 func main() {
-	loadConfig()
-
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})

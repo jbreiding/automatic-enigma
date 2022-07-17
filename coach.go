@@ -2,14 +2,11 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
-	"sync"
 	"time"
 
 	ical "github.com/arran4/golang-ical"
-	"sigs.k8s.io/yaml"
 )
 
 type (
@@ -22,8 +19,9 @@ type (
 	}
 
 	team struct {
-		Name string
-		Link string
+		Name        string
+		Flight      string
+		Application string
 	}
 
 	coach struct {
@@ -33,17 +31,33 @@ type (
 	}
 )
 
-var (
-	coaches     map[string]coach
-	coachesOnce sync.Once
+const (
+	linkFmt    = "http://wys-2022pc.sportsaffinity.com/tour/public/info/ischedule.aspx?flightguid=%s&tournamentguid=%s&tourappguid=%s&gametimezone=pacific"
+	tournament = "9DCC3624-BBFE-4F71-A8CA-0452DB26E0FF"
 )
 
-func loadConfig() {
-	coachesOnce.Do(func() {
-		if err := yaml.Unmarshal(configBytes, &coaches); err != nil {
-			log.Panicln(err)
-		}
-	})
+var coaches = map[string]coach{
+	"coach-nigel": {
+		Name: "Coach Nigel",
+		Path: "coach-nigel",
+		Teams: []team{
+			{
+				Name:        "XF B13 RCL 5",
+				Flight:      "9EFDD764-318A-4E93-8F98-D785F3BE3C57",
+				Application: "B344602F-0179-4E89-B1DE-9AD9643C2E51",
+			},
+			{
+				Name:        "XF B13 RCL 6",
+				Flight:      "167495CC-794E-443F-96C9-623BD9F27A06",
+				Application: "E009ECC2-9F8D-497F-9083-16C28172AE3D",
+			},
+			{
+				Name:        "XF B11 RCL 5",
+				Flight:      "30C1EC64-7BAC-45AB-BC01-D5713B224BD4",
+				Application: "E50870BC-674B-4992-87E5-49E10A0BB54E",
+			},
+		},
+	},
 }
 
 func splitTeams(event *ical.VEvent) (string, string, error) {
@@ -92,7 +106,7 @@ func (c coach) getTeams() (map[string][]game, error) {
 	teams := map[string][]game{}
 
 	for _, t := range c.Teams {
-		resp, err := http.Get(t.Link)
+		resp, err := http.Get(getTeamLink(t.Flight, t.Application))
 		if err != nil {
 			return teams, err
 		}
@@ -120,7 +134,7 @@ func (c coach) getTeamsCalendar() (*ical.Calendar, error) {
 	ics := ical.NewCalendarFor(c.Name)
 
 	for _, t := range c.Teams {
-		resp, err := http.Get(t.Link)
+		resp, err := http.Get(getTeamLink(t.Flight, t.Application))
 		if err != nil {
 			return ics, err
 		}
@@ -136,4 +150,8 @@ func (c coach) getTeamsCalendar() (*ical.Calendar, error) {
 	}
 
 	return ics, nil
+}
+
+func getTeamLink(f, a string) string {
+	return fmt.Sprintf(linkFmt, f, tournament, a)
 }
