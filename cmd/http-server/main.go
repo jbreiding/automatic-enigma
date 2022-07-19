@@ -105,7 +105,7 @@ func main() {
 		}
 	})
 
-	fSys, err := fs.Sub(static.Favicon(), "static")
+	fSys, err := fs.Sub(static.Favicon(), ".")
 	if err != nil {
 		log.Fatalln(err)
 	}
