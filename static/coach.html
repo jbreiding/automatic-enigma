@@ -14,13 +14,15 @@
 
     <script>
         function makeRow(container, date, games, teams) {
-            games.sort((a, b) => a.Team > b.Team)
+            games.sort((a, b) => new Date(a.Time) - new Date(b.Time))
 
             var row = document.createElement("div")
             row.className = "grid"
 
             var header = document.createElement("article")
-            header.append(date.toLocaleDateString("en-US"))
+            var d = document.createElement("strong")
+            d.append(date.toLocaleDateString("en-US"))
+            header.append(d)
             row.append(header)
 
             var count = 0
@@ -44,7 +46,14 @@
         function makeCard(container, game) {
             var card = document.createElement("article")
             var cardHeader = document.createElement("header")
-            cardHeader.append(`${game.Team} (${game.Home ? "HOME" : "AWAY"}) vs ${game.Opponent}`)
+            var team1 = document.createElement("h6")
+            team1.append(`${game.Team} (${game.Home ? "HOME" : "AWAY"})`)
+            var team2 = document.createElement("h6")
+            team2.append(`${game.Opponent}`)
+            cardHeader.append(team1)
+            cardHeader.append("vs")
+            cardHeader.append(team2)
+
             card.append(cardHeader)
 
             card.append(new Date(game.Time).toLocaleTimeString())
