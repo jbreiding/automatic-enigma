@@ -3,7 +3,6 @@ package main
 
 import (
 	"encoding/json"
-	"io/fs"
 	"log"
 	"net/http"
 	"strings"
@@ -60,7 +59,7 @@ func templateServe(w http.ResponseWriter, n, t string, c interface{}) {
 }
 
 func main() {
-	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/healthz", func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusOK)
 	})
 
@@ -105,12 +104,7 @@ func main() {
 		}
 	})
 
-	fSys, err := fs.Sub(static.Favicon(), ".")
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	http.Handle("/favicon/", http.FileServer(http.FS(fSys)))
+	http.Handle("/favicon/", http.FileServer(http.FS(static.Favicon())))
 
 	log.Println("listening on port 8080")
 	log.Fatalln(http.ListenAndServe(":8080",
