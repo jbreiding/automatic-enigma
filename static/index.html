@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!DOCTYPE html data-theme="light">
+<html data-theme="light">
 
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
 
     <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
@@ -13,41 +13,32 @@
     <base href="/" />
 </head>
 
-<body>
-    <div class="col-lg-10 mx-auto p-3 py-md-5">
-        <header class="border-bottom">
-            <span class="fs-1">Crossfire Coaches</span>
-        </header>
-        <main class="container p-3">
-            <div class="row">
-                {{ range $key, $value := . -}}
-                <div class="col-lg-4 p-3">
-                    <div class="card">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="180"
-                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap"
-                            preserveAspectRatio="xMidYMid slice" focusable="false">
-                            <title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#868e96"></rect>
-                        </svg>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $value.Name }}</h5>
-                            <ul class="list-group list-group-flush">
-                                {{- range $team := $value.Teams -}}
-                                <li class="list-group-item card-text">{{ $team.Name }}</li>
-                                {{- end }}
-                            </ul>
-                            <a href="/{{ $value.Path }}" class="btn btn-primary">Schedule</a>
-                        </div>
-                    </div>
-                </div>
-                {{- end }}
+<body class="container">
+    <header>
+        <h2>Crossfire Coaches</h2>
+    </header>
+    <main>
+        <div class="grid">
+            {{ range $key, $value := . -}}
+            <div>
+                <article>
+                    <header class="grid">
+                        <h5 class="card-title">{{ $value.Name }}</h5>
+                        <form action="/{{ $value.Path }}"><button type="submit">Schedule</button></form>
+                    </header>
+                    <ul class="grid">
+                        {{- range $team := $value.Teams -}}
+                        <li>{{ $team.Name }}</li>
+                        {{- end }}
+                    </ul>
+                </article>
             </div>
-        </main>
-        <footer class="text-muted border-top">
-            Created for Crossfire Coaches
-        </footer>
-    </div>
-
+            {{- end }}
+        </div>
+    </main>
+    <footer>
+        Created for Crossfire Coaches
+    </footer>
 </body>
 
 </html>

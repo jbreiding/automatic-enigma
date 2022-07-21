@@ -1,8 +1,8 @@
 <!DOCTYPE html>
+<html data-theme="light">
 
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
 
     <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
@@ -13,56 +13,58 @@
     <base href="/{{ .Path }}/" />
 
     <script>
-        function makeRow(container, date, games) {
+        function makeRow(container, date, games, teams) {
             games.sort((a, b) => a.Team > b.Team)
 
             var row = document.createElement("div")
-            row.className = "row border-top"
+            row.className = "grid"
 
-            var header = document.createElement("div")
-            header.className = "col-2 p-3"
+            var header = document.createElement("article")
             header.append(date.toLocaleDateString("en-US"))
             row.append(header)
 
+            var count = 0
             games.forEach(game => {
                 makeCard(row, game)
+                count++
             })
+
+            if (count < teams) {
+                while (count < teams) {
+                    blank = document.createElement("article")
+                    blank.style.visibility = "hidden"
+                    row.append(blank)
+                    count++
+                }
+            }
 
             container.append(row)
         }
 
         function makeCard(container, game) {
-            var card = document.createElement("div")
-            card.className = "card"
-            var cardHeader = document.createElement("div")
-            cardHeader.className = "card-header"
+            var card = document.createElement("article")
+            var cardHeader = document.createElement("header")
             cardHeader.append(`${game.Team} (${game.Home ? "HOME" : "AWAY"}) vs ${game.Opponent}`)
             card.append(cardHeader)
 
-            var cardBody = document.createElement("div")
-            cardBody.className = "card-body"
-            cardBody.append(`${new Date(game.Time).toLocaleTimeString()} @ ${game.Location}`)
-            card.append(cardBody)
-            var td = document.createElement("div")
-            td.className = "col-3 p-3"
-            td.append(card)
-            container.append(td)
+            card.append(`${new Date(game.Time).toLocaleTimeString()} @ ${game.Location}`)
+            // var td = document.createElement("footer")
+            // card.append(td)
+            container.append(card)
         }
     </script>
 </head>
 
-<body>
-    <div class="col-lg-10 mx-auto p-3 py-md-5">
-        <header class="row border-bottom">
-            <span class="col text-start fs-1">{{ .Name }}</span>
-            <a class="col text-end" href="teams.ics">subscribe to calendar</a>
-        </header>
-        <main class="container p-3" id="table-games">
-        </main>
-        <footer class="text-muted border-top">
-            Created for {{ .Name }}
-        </footer>
-    </div>
+<body class="container">
+    <header class="grid">
+        <h2>{{ .Name }}</h2>
+        <form action="teams.ics"><button type="submit">subscribe to calendar</button></form>
+    </header>
+    <main id="table-games">
+    </main>
+    <footer class="">
+        Created for {{ .Name }}
+    </footer>
 
     <script>
         window.onload = () => {
@@ -74,10 +76,10 @@
                 })
                 .then(jsondata => {
                     Object.entries(jsondata).sort((a, b) => new Date(a[0]) - new Date(b[0])).forEach(event => {
-                        makeRow(games, new Date(event[0]), event[1])
-                    })
-                    return jsondata
-                });
+                        makeRow(games, new Date(event[0]), event[1], {{ len .Teams }})
+                })
+            return jsondata
+        });
         }
     </script>
 </body>
