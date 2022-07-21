@@ -3,7 +3,6 @@ package pkg
 import (
 	"fmt"
 	"net/http"
-	"strings"
 	"time"
 
 	ical "github.com/arran4/golang-ical"
@@ -36,22 +35,6 @@ var coaches = map[string]coach{
 
 func Coaches() map[string]coach {
 	return coaches
-}
-
-func splitTeams(event *ical.VEvent) (string, string, error) {
-	description := event.GetProperty(ical.ComponentPropertyDescription).Value
-
-	header := strings.SplitN(description, "\\n \\n", 2)
-	if len(header) != 2 {
-		return "", "", fmt.Errorf("unable to find header, event description invalid %s", description)
-	}
-
-	teams := strings.SplitN(header[0], "\\n", 3)
-	if len(teams) != 3 {
-		return "", "", fmt.Errorf("unable to find teams, event description invalid %s", description)
-	}
-
-	return teams[0], teams[2], nil
 }
 
 func (c coach) GetTeams() (map[string][]game, error) {

@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -13,6 +14,7 @@ type game struct {
 	Opponent string
 	Time     time.Time
 	Location string
+	Venue    string
 }
 
 func NewGame(event *ical.VEvent, teamName string) (game, error) {
@@ -32,6 +34,7 @@ func NewGame(event *ical.VEvent, teamName string) (game, error) {
 		Time:     start,
 		Location: event.GetProperty(ical.ComponentPropertyLocation).Value,
 		Opponent: team2,
+		Venue:    getVenue(event),
 	}
 
 	if !game.Home {
@@ -39,4 +42,26 @@ func NewGame(event *ical.VEvent, teamName string) (game, error) {
 	}
 
 	return game, nil
+}
+
+func splitTeams(event *ical.VEvent) (string, string, error) {
+	description := event.GetProperty(ical.ComponentPropertyDescription).Value
+
+	header := strings.SplitN(description, "\\n \\n", 2)
+	if len(header) != 2 {
+		return "", "", fmt.Errorf("unable to find header, event description invalid %s", description)
+	}
+
+	teams := strings.SplitN(header[0], "\\n", 3)
+	if len(teams) != 3 {
+		return "", "", fmt.Errorf("unable to find teams, event description invalid %s", description)
+	}
+
+	return teams[0], teams[2], nil
+}
+
+func getVenue(event *ical.VEvent) string {
+	description := event.GetProperty(ical.ComponentPropertyDescription).Value
+
+	return strings.SplitN(strings.SplitN(description, "=", 2)[1], "\\n", 2)[0]
 }

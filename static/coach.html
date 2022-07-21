@@ -47,9 +47,23 @@
             cardHeader.append(`${game.Team} (${game.Home ? "HOME" : "AWAY"}) vs ${game.Opponent}`)
             card.append(cardHeader)
 
-            card.append(`${new Date(game.Time).toLocaleTimeString()} @ ${game.Location}`)
-            // var td = document.createElement("footer")
-            // card.append(td)
+            card.append(new Date(game.Time).toLocaleTimeString())
+
+            var button = document.createElement("button")
+            button.append(`@ ${game.Location}`)
+            button.setAttribute("type", "submit")
+            var input = document.createElement("input")
+            input.setAttribute("type", "hidden")
+            input.setAttribute("name", "venueguid")
+            input.setAttribute("value", game.Venue)
+            var directions = document.createElement("form")
+            directions.setAttribute("action", "https://home.sportsaffinity.com/m/tour/venueinfo.aspx")
+            directions.setAttribute("target", "_blank")
+            directions.append(input)
+            directions.append(button)
+            var td = document.createElement("footer")
+            td.append(directions)
+            card.append(td)
             container.append(card)
         }
     </script>
