@@ -2,17 +2,20 @@ package static
 
 import "embed"
 
-//go:embed coach.html
-var coachBytes []byte
+//go:embed coach.gotmpl
+var coach string
 
-//go:embed index.html
-var indexBytes []byte
+//go:embed index.gotmpl
+var index string
 
 //go:embed favicon/*
 var favicon embed.FS
 
+//go:embed app.js
+var appJS []byte
+
 func Coach() string {
-	return string(coachBytes)
+	return coach
 }
 
 func Favicon() embed.FS {
@@ -20,5 +23,9 @@ func Favicon() embed.FS {
 }
 
 func Index() string {
-	return string(indexBytes)
+	return index
+}
+
+func AppJS() []byte {
+	return appJS
 }

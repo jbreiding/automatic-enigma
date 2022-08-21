@@ -17,18 +17,18 @@ type (
 )
 
 const (
-	linkFmt    = "http://wys-2022pc.sportsaffinity.com/tour/public/info/ischedule.aspx?flightguid=%s&tournamentguid=%s&tourappguid=%s&gametimezone=pacific"
-	tournament = "9DCC3624-BBFE-4F71-A8CA-0452DB26E0FF"
+	linkFmt    = "http://wys.affinitysoccer.com/tour/public/info/ischedule.aspx?flightguid=%s&tournamentguid=%s&tourappguid=%s&gametimezone=pacific"
+	tournament = "5952FE5C-4709-4C13-8E39-13803690B102"
 )
 
 var coaches = map[string]coach{
-	"coach-nigel": {
-		Name: "Coach Nigel",
-		Path: "coach-nigel",
+	"coach-johnny": {
+		Name: "Coach Johnny",
+		Path: "coach-johnny",
 		Teams: []team{
-			NewTeam("XF B13 RCL 5", "9EFDD764-318A-4E93-8F98-D785F3BE3C57", "B344602F-0179-4E89-B1DE-9AD9643C2E51"),
-			NewTeam("XF B13 RCL 6", "167495CC-794E-443F-96C9-623BD9F27A06", "E009ECC2-9F8D-497F-9083-16C28172AE3D"),
-			NewTeam("XF B11 RCL 5", "30C1EC64-7BAC-45AB-BC01-D5713B224BD4", "E50870BC-674B-4992-87E5-49E10A0BB54E"),
+			NewTeam("XF B13 RCL 4", "5E120FFE-F973-49EB-A8C3-D171AADD1A98", "D199B903-6CDE-43EB-A48E-8DAE6C144BC1"),
+			NewTeam("XF B13 RCL 5", "5E120FFE-F973-49EB-A8C3-D171AADD1A98", "26D457F5-F62A-4042-8D55-BBE09AA96331"),
+			NewTeam("XF B11 RCL 5", "418CBC2A-7AF6-48F4-988C-7A07566F9AA4", "1F193B87-8A58-4D53-A436-BADE1D81ED88"),
 		},
 	},
 }

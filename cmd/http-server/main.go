@@ -67,13 +67,16 @@ func main() {
 		path := strings.TrimPrefix(r.URL.Path, "/")
 
 		switch {
+		case path == "app.js":
+			w.Header().Set("Content-Type", "application/javascript")
+			w.Write(static.AppJS())
 		case len(path) > 0 && !strings.Contains(path, "/"):
 			if c, ok := pkg.Coaches()[path]; ok {
 				templateServe(w, "coach", static.Coach(), c)
 			} else {
 				http.NotFound(w, r)
 			}
-		case strings.Count(path, "/") == 1:
+		case len(path) > 0 && strings.Count(path, "/") == 1:
 			if c, ok := pkg.Coaches()[strings.Split(path, "/")[0]]; ok {
 				switch {
 				case strings.HasSuffix(path, teamsJson):

@@ -2,6 +2,9 @@
 <html data-theme="light">
 
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
 
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
@@ -13,7 +16,7 @@
     <base href="/" />
 </head>
 
-<body class="container">
+<body class="container-fluid">
     <header>
         <h2>Crossfire Coaches</h2>
     </header>
@@ -24,7 +27,7 @@
                 <article>
                     <header class="grid">
                         <h5 class="card-title">{{ $value.Name }}</h5>
-                        <form action="/{{ $value.Path }}"><button type="submit">Schedule</button></form>
+                        <a role="button" href="/{{ $value.Path }}">Schedule</a>
                     </header>
                     <ul class="grid">
                         {{- range $team := $value.Teams -}}
