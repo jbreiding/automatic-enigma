@@ -35,7 +35,7 @@ function makeCard(container, game) {
     var cardHeader = document.createElement("header")
     cardHeader.append(`${game.Team} (${game.Home ? "HOME" : "AWAY"})`)
     cardHeader.append(document.createElement("br"))
-    cardHeader.append("vs")
+    cardHeader.append(`${game.Home ? "vs" : "at"}`)
     cardHeader.append(document.createElement("br"))
     cardHeader.append(`${game.Opponent}`)
 
