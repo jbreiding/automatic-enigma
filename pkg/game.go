@@ -63,5 +63,9 @@ func splitTeams(event *ical.VEvent) (string, string, error) {
 func getVenue(event *ical.VEvent) string {
 	description := event.GetProperty(ical.ComponentPropertyDescription).Value
 
-	return strings.SplitN(strings.SplitN(description, "Field:", 2)[1], "\\n", 2)[0]
+	if strings.Contains(description, "Direction: ") {
+		return strings.SplitN(strings.SplitN(description, "Direction: ", 2)[1], "\\n", 2)[0]
+	}
+
+	return ""
 }

@@ -44,7 +44,7 @@ function makeCard(container, game) {
     card.append(new Date(game.Time).toLocaleTimeString())
 
     var link = document.createElement("a")
-    link.setAttribute("href", `https://home.sportsaffinity.com/m/tour/venueinfo.aspx?venueguid=${game.Venue}`)
+    link.setAttribute("href", game.Venue)
     link.setAttribute("role", "button")
     link.append(`@ ${game.Location}`)
     var small = document.createElement("small")
