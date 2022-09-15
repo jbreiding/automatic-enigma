@@ -31,6 +31,13 @@ var coaches = map[string]coach{
 			NewTeam("XF B11 RCL 4", "418CBC2A-7AF6-48F4-988C-7A07566F9AA4", "1F193B87-8A58-4D53-A436-BADE1D81ED88"),
 		},
 	},
+	"coach-ibra": {
+		Name: "Coach Ibra",
+		Path: "coach-ibra",
+		Teams: []team{
+			NewTeam("XF B12 RCL 5", "24ECEA64-4E4B-4138-9BA6-F28A99BF7028", "1DF719ED-6042-492A-835C-9C21D6F06A37"),
+		},
+	},
 }
 
 func Coaches() map[string]coach {
