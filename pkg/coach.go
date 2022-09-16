@@ -9,7 +9,7 @@ import (
 )
 
 type (
-	coach struct {
+	Coach struct {
 		Name  string
 		Path  string
 		Teams []team
@@ -21,7 +21,7 @@ const (
 	tournament = "5952FE5C-4709-4C13-8E39-13803690B102"
 )
 
-var coaches = map[string]coach{
+var coaches = map[string]*Coach{
 	"coach-johnny": {
 		Name: "Coach Johnny",
 		Path: "coach-johnny",
@@ -40,11 +40,11 @@ var coaches = map[string]coach{
 	},
 }
 
-func Coaches() map[string]coach {
+func Coaches() map[string]*Coach {
 	return coaches
 }
 
-func (c coach) GetTeams() (map[string][]game, error) {
+func (c *Coach) GetTeams() (map[string][]game, error) {
 	teams := map[string][]game{}
 
 	for _, t := range c.Teams {
@@ -72,7 +72,7 @@ func (c coach) GetTeams() (map[string][]game, error) {
 	return teams, nil
 }
 
-func (c coach) GetTeamsCalendar() (*ical.Calendar, error) {
+func (c *Coach) GetTeamsCalendar() (*ical.Calendar, error) {
 	ics := ical.NewCalendarFor(c.Name)
 
 	for _, t := range c.Teams {

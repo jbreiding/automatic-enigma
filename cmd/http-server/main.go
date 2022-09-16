@@ -83,33 +83,7 @@ func main() {
 	})
 
 	for _, c := range pkg.Coaches() {
-		http.HandleFunc(fmt.Sprintf("/%s", c.Path), func(w http.ResponseWriter, r *http.Request) {
-			templateServe(w, "coach", static.Coach(), c)
-		})
-
-		http.HandleFunc(fmt.Sprintf("/%s/%s", c.Path, teamsJson), func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Content-Type", "application/json")
-
-			t, err := c.GetTeams()
-			if err != nil {
-				writeError(w, err)
-			} else {
-				err = json.NewEncoder(w).Encode(t)
-				writeError(w, err)
-			}
-		})
-
-		http.HandleFunc(fmt.Sprintf("/%s/%s", c.Path, teamsIcs), func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Content-Type", "text/calendar")
-
-			t, err := c.GetTeamsCalendar()
-			if err != nil {
-				writeError(w, err)
-			} else {
-				err = t.SerializeTo(w)
-				writeError(w, err)
-			}
-		})
+		coachHandler(c)
 	}
 
 	http.Handle("/favicon/", http.FileServer(http.FS(static.Favicon())))
@@ -117,4 +91,34 @@ func main() {
 	log.Println("listening on port 8080")
 	log.Fatalln(http.ListenAndServe(":8080",
 		logger(gzipper(setCacheHeader(http.DefaultServeMux)))))
+}
+
+func coachHandler(c *pkg.Coach) {
+	http.HandleFunc(fmt.Sprintf("/%s", c.Path), func(w http.ResponseWriter, r *http.Request) {
+		templateServe(w, "coach", static.Coach(), c)
+	})
+
+	http.HandleFunc(fmt.Sprintf("/%s/%s", c.Path, teamsJson), func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+
+		t, err := c.GetTeams()
+		if err != nil {
+			writeError(w, err)
+		} else {
+			err = json.NewEncoder(w).Encode(t)
+			writeError(w, err)
+		}
+	})
+
+	http.HandleFunc(fmt.Sprintf("/%s/%s", c.Path, teamsIcs), func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/calendar")
+
+		t, err := c.GetTeamsCalendar()
+		if err != nil {
+			writeError(w, err)
+		} else {
+			err = t.SerializeTo(w)
+			writeError(w, err)
+		}
+	})
 }
